@@ -35,15 +35,17 @@ class Store:
         for product, quant in shopping_list:
             # handle input:
             if quant <= 0:
-                raise ValueError("You have to order at least 1 product.")
-            if product not in self.products:
+                print("You have to order at least 1 product.")
+            elif product not in self.products:
                 print(f"'{product}' is not available. Skipping this request.")
-            if product.get_quantity() <= quant:
-                print(f"Only {product.quantity} '{product}' left. Skipping this request.")
+            elif product.get_quantity() < quant:
+                print(f"Only {product.quantity} '{product.name}' left. Skipping this request.")
                 # alt: adjust quant to available stock:     -->     quant = product.get_quantity()
 
-            total_price += product.price * quant
-            product.set_quantity(product.get_quantity() - quant)
+            else:
+                total_price += product.price * quant
+                product.set_quantity(product.get_quantity() - quant)
+                print(f"{quant} x '{product.name}' (${product.price * quant}) ordered.")
 
         return total_price
 

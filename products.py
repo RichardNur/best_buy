@@ -23,7 +23,6 @@ class Product:
         self.quantity = quantity
         if quantity == 0:
             self.deactivate()
-        print(f"New quantity '{self.name}': {self.quantity}.")
 
     def is_active(self):
         return self.active
