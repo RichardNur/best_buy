@@ -8,6 +8,7 @@ product_list = [ Product("MacBook Air M2", price=1450, quantity=100),
                ]
 best_buy = Store(product_list)
 
+
 def start(storage):
     """
     Gets the store and shows the menu. Returns the operation to be executed.
@@ -19,21 +20,24 @@ def start(storage):
     except ValueError as e:
         print(e)
 
+
 def list_products(storage):
     for n, product in enumerate(storage.get_all_products()):
         print(f"{n+1}. {product.name}, Prize: ${product.price}, Quantity: {product.quantity}")
 
+
 def show_total_amount(storage):
     total_amount = sum(product.quantity for product in storage.get_all_products())
     print(f"Total of {total_amount} items in store.")
+
 
 def make_order(storage):
     """let user place an order in the storage."""
     list_products(storage)
     shopping_list = []
 
-    # Take Order:
     while True:
+        # Take Order:
         products = storage.get_all_products()
         try:
             item = int(input(f"\nWhat item do you want to purchase (1 - {len(products)})?\n(Enter '0' for Shopping Cart): "))
@@ -54,7 +58,7 @@ def make_order(storage):
         except IndexError as i:
             print(f"Error in product choice. Choose a valid item! {i}")
 
-    # Place Order:
+        # Place Order:
         print("Shopping List:")
         for item, amount in shopping_list:
             print(f"{item.name} ({amount})")
@@ -69,6 +73,7 @@ def make_order(storage):
         print(v)
     except IndexError as e:
         print(e)
+
 
 def main():
     func_dic = {
@@ -89,6 +94,7 @@ def main():
             action(best_buy)
         else:
             print("\nInvalid option. Please choose a number between 1 and 4.")
+
 
 if __name__ == "__main__":
     main()

@@ -6,7 +6,7 @@ class Store:
     def __init__(self, products):
         """Initializes products in the Store, checks if data types are correct. """
 
-        if isinstance(products, list):
+        if not isinstance(products, list):
             raise TypeError(f"Found wrong data type in {products}")
 
         for product in products:

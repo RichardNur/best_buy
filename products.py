@@ -4,8 +4,8 @@ class Product:
 
     def __init__(self, name, price, quantity):
         """Initializes the Product with a name, price, and quantity."""
-        if not isinstance(name, str):
-            raise TypeError(f"ERROR: 'name' must be a string, but got {type(name).__name__}")
+        if not isinstance(name, str) or not name:
+            raise TypeError(f"ERROR: 'name' must be a string, but got {type(name).__name__} or empty string.")
         if not isinstance(price, (int, float)):
             raise TypeError(f"ERROR: 'price' must be a number, but got {type(price).__name__}")
         if not isinstance(quantity, int):
@@ -19,6 +19,7 @@ class Product:
         self.price = price
         self.quantity = quantity
         self.active = True
+
 
     def get_quantity(self):
         """ returns the quantity of the given Product. """
@@ -35,18 +36,21 @@ class Product:
         if quantity == 0:
             self.deactivate()
 
+
     def is_active(self):
         """returns True if Product is active in the store and False if the Product is not available. """
         return self.active
+
 
     def deactivate(self):
         """ Deactivates the availability of the Product in the store."""
         self.active = False
 
+
     def show(self):
         """ Returns an f-string to show infos about the Product (quantity left and if its active in the store). """
-        return f"{self.name}, Price: {self.price},\
-                Quantity: {self.quantity}, active={self.active}"
+        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}, active={self.active}"
+
 
     def buy(self, quantity):
         """
@@ -80,3 +84,5 @@ if __name__ == "__main__":
 
     bose.set_quantity(1000)
     bose.show()
+
+    print(Product("Bose QuietComfort Earbuds", price=250, quantity=500).show())
