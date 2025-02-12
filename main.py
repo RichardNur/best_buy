@@ -1,10 +1,12 @@
-from products import Product
+from products import Product, NonStockedProduct, LimitedProduct
 from store import Store
 
 # setup initial stock of inventory
 product_list = [ Product("MacBook Air M2", price=1450, quantity=100),
                  Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                 Product("Google Pixel 7", price=500, quantity=250)
+                 Product("Google Pixel 7", price=500, quantity=250),
+                 NonStockedProduct("Windows License", price=125),
+                 LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
                ]
 best_buy = Store(product_list)
 
@@ -23,7 +25,8 @@ def start(storage):
 
 def list_products(storage):
     for n, product in enumerate(storage.get_all_products()):
-        print(f"{n+1}. {product.name}, Prize: ${product.price}, Quantity: {product.quantity}")
+        print(f"{n + 1}. {product.show()}")
+        # print(f"{n+1}. {product.name}, Prize: ${product.price}, Quantity: {product.quantity}")
 
 
 def show_total_amount(storage):
@@ -42,7 +45,7 @@ def make_order(storage):
         try:
             item = int(input(f"\nWhat item do you want to purchase (1 - {len(products)})?\n(Enter '0' for Shopping Cart): "))
 
-            if item == 0:
+            if item == 0: # Go to Cart if '0' is entered for an item:
                 break
             else:
                 item += -1

@@ -1,4 +1,5 @@
 
+
 class Product:
     """The Product class represents a specific type of product available in the store"""
 
@@ -49,14 +50,13 @@ class Product:
 
     def show(self):
         """ Returns an f-string to show infos about the Product (quantity left and if its active in the store). """
-        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}, active={self.active}"
+        return f"{self.name}, Price: ${self.price}, Quantity: {self.quantity}"
 
 
     def buy(self, quantity):
         """
         :param quantity: Number of products the user wants to buy.
-        :return: The total price, if quantity is valid.
-        """
+        :return: The total price, if quantity is valid. """
 
         if not isinstance(quantity, int):
             raise TypeError("Quantity must be an integer.")
@@ -64,11 +64,72 @@ class Product:
             raise ValueError("You have to buy at least 1 product.")
         if quantity > self.quantity:
             raise ValueError(f"Sorry, only {self.quantity} products left.")
+        else:
+            # Calculate & Return total price
+            total_price = quantity * self.price
+            self.set_quantity(self.quantity - quantity)
+            return total_price
 
-        # Calculate & Return total price
-        total_price = quantity * self.price
-        self.set_quantity(self.quantity - quantity)
-        return total_price
+
+class NonStockedProduct(Product):
+    """  """
+
+    def __init__(self, name, price):
+        super().__init__(name, price, 0)
+        self.__quantity = 0
+
+
+    def show(self):
+        """  """
+        return f"{self.name}, Price: ${self.price}. Non-Stocked Product"
+
+
+    def set_quantity(self, quantity):
+        """ lets the user enter a new quantity. Deactivates the Product in the store, if 0 or less. """
+        if not isinstance(quantity, int):
+            raise TypeError(f"ERROR: Wrong datatype in input.")
+        print(f"{self.name} is not stocked.")
+
+
+    def buy(self, quantity):
+        """
+        :param quantity: Number of products the user wants to buy.
+        :return: The total price, if quantity is valid. """
+
+        if not isinstance(quantity, int):
+            raise TypeError("Quantity must be an integer.")
+        if quantity <= 0:
+            raise ValueError("You have to buy at least 1 product.")
+        else:
+            # Calculate & Return total price
+            total_price = quantity * self.price
+            return total_price
+
+
+class LimitedProduct(Product):
+    """ """
+
+    def __init__(self, name, price, quantity, maximum):
+        super().__init__(name, price, quantity)
+        self.maximum = maximum
+
+
+    def show(self):
+        """  """
+        return f"{self.name}, Price: ${self.price}. Maximum in order: {self.maximum}"
+
+
+    def buy(self, quantity):
+        """
+        :param: quantity: Number of products the user wants to buy.
+        :param: maximum: Number of max. purchasable products.
+        :return: The total price, if quantity is valid. """
+
+        if quantity > self.maximum:
+            raise ValueError(f"{self.name} can only be added {self.maximum} times to cart.")
+        else:
+            return super().buy(quantity)
+
 
 
 if __name__ == "__main__":
@@ -86,3 +147,7 @@ if __name__ == "__main__":
     bose.show()
 
     print(Product("Bose QuietComfort Earbuds", price=250, quantity=500).show())
+
+    print(NonStockedProduct("Windows License", price=125).show())
+    print(LimitedProduct("Shipping", price=10, quantity=250, maximum=1).show())
+
