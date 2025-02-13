@@ -1,11 +1,10 @@
 from products import Product
 
+
 class Store:
     """Represents a store containing a list of products."""
 
     def __init__(self, products):
-        """Initializes products in the Store, checks if data types are correct. """
-
         if not isinstance(products, list):
             raise TypeError(f"Found wrong data type in {products}")
 

@@ -1,20 +1,37 @@
-from products import Product, NonStockedProduct, LimitedProduct
+import products
+import promotions
 from store import Store
 
+
 # setup initial stock of inventory
-product_list = [ Product("MacBook Air M2", price=1450, quantity=100),
-                 Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                 Product("Google Pixel 7", price=500, quantity=250),
-                 NonStockedProduct("Windows License", price=125),
-                 LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
+product_list = [ products.Product("MacBook Air M2", price=1450, quantity=100),
+                 products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+                 products.Product("Google Pixel 7", price=500, quantity=250),
+                 products.NonStockedProduct("Windows License", price=125),
+                 products.LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
                ]
+
 best_buy = Store(product_list)
+
+# Create promotion catalog
+second_half_price = promotions.SecondHalfPrice("Second Half price!")
+third_one_free = promotions.ThirdOneFree("Third One Free!")
+thirty_percent = promotions.PercentDiscount("30% off!", percent=30)
+
+# Add promotions to products
+product_list[0].set_promotion(second_half_price)
+product_list[1].set_promotion(third_one_free)
+product_list[3].set_promotion(thirty_percent)
 
 
 def start(storage):
     """
-    Gets the store and shows the menu. Returns the operation to be executed.
+    Displays the store menu and takes user input to choose an operation.
+
+    :param storage: Store instance containing the available products.
+    :return: Selected operation (int).
     """
+
     print("\n   Store Menu   -------\n1. List all products in store\n2. Show total amount in store\n3. Make an order\n4. Quit\n")
     try:
         operation = int(input("Please choose a number: "))
@@ -24,18 +41,36 @@ def start(storage):
 
 
 def list_products(storage):
+    """
+    Lists all available products in the store.
+
+    :param storage: Store instance containing the available products.
+    """
+
     for n, product in enumerate(storage.get_all_products()):
         print(f"{n + 1}. {product.show()}")
         # print(f"{n+1}. {product.name}, Prize: ${product.price}, Quantity: {product.quantity}")
 
 
 def show_total_amount(storage):
+    """
+    Displays the total number of items in the store.
+
+    :param storage: Store instance containing the available products.
+    """
+
     total_amount = sum(product.quantity for product in storage.get_all_products())
     print(f"Total of {total_amount} items in store.")
 
 
 def make_order(storage):
-    """let user place an order in the storage."""
+    """
+    Allows the user to create an order and processes it.
+
+    :param storage: Store instance containing the available products.
+    :raises ValueError: If invalid input is provided during the process.
+    """
+
     list_products(storage)
     shopping_list = []
 
@@ -69,7 +104,7 @@ def make_order(storage):
     try:
         if shopping_list:
             total_price = storage.order(shopping_list)
-            input(f"Order placed! Total Price: ${total_price}\n\nPress Enter to continue.")
+            input(f"Order placed! Total Price: ${total_price} (with Promotions)\n\nPress Enter to continue.")
         else:
             input("\nNo items ordered. Press Enter to continue.")
     except ValueError as v:
@@ -79,6 +114,13 @@ def make_order(storage):
 
 
 def main():
+    """
+    Main program loop for interacting with the store.
+
+    Prompts users to select operations and handles their execution, including listing products,
+    showing total quantities, and making orders. Exits on user request.
+    """
+
     func_dic = {
         1: list_products,
         2: show_total_amount,
