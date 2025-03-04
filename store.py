@@ -12,8 +12,12 @@ class Store:
             if not isinstance(product, Product):
                 raise TypeError(f"Found wrong Product Type in {product}.")
 
-        self.products = products if products else []
+        self._products = products if products else []
 
+    @property
+    def products(self):
+        """Returns all products in the store."""
+        return self._products
 
     def add_product(self, product):
         """Adds a new product to the store."""
@@ -34,15 +38,15 @@ class Store:
         else:
             self.products.remove(product)
 
-
+    @property
     def get_total_quantity(self):
         """ Returns the total quantity of a given product. """
         return sum(product.get_quantity() for product in self.products)
 
-
+    @property
     def get_all_products(self):
         """ returns each product available in the Store."""
-        return [product for product in self.products if product.is_active()]
+        return [product for product in self.products if product.is_active]
 
 
     def order(self, shopping_list: list[tuple[Product, int]]):
@@ -69,21 +73,3 @@ class Store:
                 print(f"{quant} x '{product.name}' (${product.price * quant}) ordered.")
 
         return total_price
-
-
-if __name__ == "__main__":
-
-    #TESTS
-    product_list = [Product("MacBook Air M2", price=1450, quantity=100),
-                    Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                    Product("Google Pixel 7", price=500, quantity=250),
-                    ]
-
-    store = Store(product_list)
-    products = store.get_all_products()
-
-    print(store.get_total_quantity())
-    print(store.order([(products[0], 1), (products[1], 2)]))
-
-    print()
-    print(products[1].show())

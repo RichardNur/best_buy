@@ -47,7 +47,7 @@ def list_products(storage):
     :param storage: Store instance containing the available products.
     """
 
-    for n, product in enumerate(storage.get_all_products()):
+    for n, product in enumerate(storage.get_all_products):
         print(f"{n + 1}. {product.show()}")
         # print(f"{n+1}. {product.name}, Prize: ${product.price}, Quantity: {product.quantity}")
 
@@ -59,7 +59,7 @@ def show_total_amount(storage):
     :param storage: Store instance containing the available products.
     """
 
-    total_amount = sum(product.quantity for product in storage.get_all_products())
+    total_amount = sum(product.quantity for product in storage.get_all_products)
     print(f"Total of {total_amount} items in store.")
 
 
@@ -76,18 +76,18 @@ def make_order(storage):
 
     while True:
         # Take Order:
-        products = storage.get_all_products()
+        all_products = storage.get_all_products
         try:
-            item = int(input(f"\nWhat item do you want to purchase (1 - {len(products)})?\n(Enter '0' for Shopping Cart): "))
+            item = int(input(f"\nWhat item do you want to purchase (1 - {len(all_products)})?\n(Enter '0' for Shopping Cart): "))
 
             if item == 0: # Go to Cart if '0' is entered for an item:
                 break
             else:
                 item += -1
 
-            amount = int(input(f"Enter the amount of '{products[item].name}' you want to purchase: "))
-            shopping_list.append((products[item], amount))
-            print(f"\n{amount} x {products[item].name} added to Shopping List.")
+            amount = int(input(f"Enter the amount of '{all_products[item].name}' you want to purchase: "))
+            shopping_list.append((all_products[item], amount))
+            print(f"\n{amount} x {all_products[item].name} added to Shopping List.")
 
         except ValueError as v:
             print(v)

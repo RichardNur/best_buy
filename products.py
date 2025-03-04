@@ -36,11 +36,10 @@ class Product:
             raise TypeError("Invalid Promotion Type.")
         self.promotion = promotion
 
-
+    @property
     def get_quantity(self):
         """ returns the quantity of the given Product. """
         return self.quantity
-
 
     def set_quantity(self, quantity):
         """
@@ -58,7 +57,7 @@ class Product:
         if quantity == 0:
             self.deactivate()
 
-
+    @property
     def is_active(self):
         """returns True if Product is active in the store, otherwise False. """
         return self.active
@@ -141,7 +140,6 @@ class LimitedProduct(Product):
 
     def show(self):
         """ Displays the product details, including the maximum purchase limit. """
-
         return f"{self.name}, Price: ${self.price}. Maximum in order: {self.maximum}"
 
 
@@ -154,23 +152,3 @@ class LimitedProduct(Product):
         if quantity > self.maximum:
             raise ValueError(f"{self.name} can only be added {self.maximum} times to cart.")
         return super().buy(quantity)
-
-
-if __name__ == "__main__":
-    bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-    mac = Product("MacBook Air M2", price=1450, quantity=100)
-
-    print(bose.buy(50))
-    print(mac.buy(100))
-    print(mac.is_active())
-
-    bose.show()
-    mac.show()
-
-    bose.set_quantity(1000)
-    bose.show()
-
-    print(Product("Bose QuietComfort Earbuds", price=250, quantity=500).show())
-
-    print(NonStockedProduct("Windows License", price=125).show())
-    print(LimitedProduct("Shipping", price=10, quantity=250, maximum=1).show())
